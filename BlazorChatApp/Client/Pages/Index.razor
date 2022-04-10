@@ -1,6 +1,19 @@
 ﻿@page "/"
 @inject NavigationManager NavigationManager
 
+<PageTitle>SignalR Chat</PageTitle>
+<h3>SignalR Chat</h3>
+
+@if (!IsConnected)
+{
+    <div class="input-group">
+        <input @bind="username" class="form-control" placeholder="What's your name?">
+        <button class="btn btn-primary form-control-append" @onclick="Connect">
+            Connect
+        </button>
+    </div>
+}
+
 @code{
     private HubConnection? hubConnection;
     public string messages = string.Empty;
@@ -32,7 +45,7 @@
         }
     }
 
-    public bool IsConnceted => hubConnection?.State == HubConnectionState.Connected;
+    public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
 
     public async ValueTask DisposeAsync()
     {
