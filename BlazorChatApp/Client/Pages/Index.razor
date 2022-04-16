@@ -1,17 +1,22 @@
 ﻿@page "/"
 @inject NavigationManager NavigationManager
+@inject NavigationManager UriHelper
 @inject IJSRuntime JSRuntime 
 
 <PageTitle>SignalR Chat</PageTitle>
-<h3>SignalR Chat</h3>
+<h3 class="text-lg-center" style="margin-top: 20px; margin-bottom: 20px; font-weight: bold;">SignalR Chat</h3>
 
 @if (!IsConnected)
 {
-    <div class="input-group">
-        <input @bind="username" class="form-control" placeholder="What's your name?">
-        <button class="btn btn-primary form-control-append" @onclick="Connect">
-            Connect
-        </button>
+    
+    <div class="col-4 offset-4"> 
+        <div class="input-group">
+            <input @bind="username" class="form-control" placeholder="What's your name?">
+            <button class="btn btn-primary form-control-append" @onclick="Connect">
+                <span class="oi oi-account-login"> </span>
+                 Connect
+            </button>
+        </div>
     </div>
 }
 else
@@ -20,6 +25,9 @@ else
         @messages
     </textarea>  
     <div class="input-group">
+        <button class="btn btn-danger">
+            <span class="oi oi-account-logout"> </span>
+        </button>
         <input @bind-value="message"
         @bind-value:event="oninput"
         @onkeyup="HandleInput"
@@ -27,7 +35,8 @@ else
         <button class="btn btn-primary form-group-append"
             @onclick="Send"
             disabled="@(!IsConnected)">
-            Send
+            <span class="oi oi-envelope-closed"> </span>
+             Send
         </button>
     </div>
 }
@@ -37,6 +46,7 @@ else
     public string messages = string.Empty;
     public string username = string.Empty;
     public string message = string.Empty;
+    private List<string> users = new List<string>();
     ElementReference TextAreaRef;
 
     private async Task Connect()
@@ -52,12 +62,19 @@ else
             JSRuntime.InvokeVoidAsync("scrollToBottom", TextAreaRef);
             StateHasChanged();
         });
+        users.Add(username);
 
         await hubConnection.StartAsync();
     }
 
     private async Task Send()
     {
+        //Todo: Change color of other users messages
+        //foreach (var item in users)
+        //{
+        //    if(item)
+        //}
+
         if(hubConnection != null)
         {
             await hubConnection.SendAsync("AddMessageToChat", username, message);
@@ -77,4 +94,6 @@ else
         if (hubConnection != null)
             await hubConnection.DisposeAsync();
     }
+
+
 }

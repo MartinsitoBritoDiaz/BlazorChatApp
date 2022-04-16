@@ -16,7 +16,7 @@ namespace BlazorChatApp.Server.Hubs
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            string username = Users.FirstOrDefault(u => u.Key ==Context.ConnectionId).Value;
+            string username = Users.FirstOrDefault(u => u.Key == Context.ConnectionId).Value;
             await AddMessageToChat(string.Empty, $"{username} left the party!");
         }
 
