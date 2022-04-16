@@ -13,17 +13,17 @@ Thanks for checking out this project.
 I was thinking about how to change color bar on blazor menu, because it uses boostrap 5 and i don't want to use style in html code, so i went to stack overflow and i found an answer about that, some people had the same question, a person had this shape to resolve that:
 
 He said "You need to change this code on MainLayout"
-
+```
 <div class="sidebar">
     <NavMenu />
 </div>
-
+```
 for this:
-
+```
 <div style="background-image:none;background-color:cadetblue;" class="sidebar">
     <NavMenu />
 </div>
-
+```
 ## Built with
     >_ C Sharp
     >_ Blazor
